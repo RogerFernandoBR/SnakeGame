@@ -10,8 +10,8 @@ window.onload = function(){
     let speedY = 0; //Velocidade na cordenada Y
     let headX = 10; //Posição da cabeça da serpente na cordenada X
     let headY = 15; //Posição da cabeça da serpente na cordenada Y
-    let frameLenght = 20; //Tamanho de cada frame
-    let qtdFrames = 20; //Quantidade de frames no quadro do jogo
+    let frameLenght = 10; //Tamanho de cada frame
+    let qtdFrames = 40; //Quantidade de frames no quadro do jogo
     let apleX = 15; //Posição da maça na cordenada X
     let apleY = 15; //Posição da maça na cordenada Y
     let trail = [0]; //Array representando os frams com o rastro da serpente
@@ -19,6 +19,14 @@ window.onload = function(){
 
     //Função game executada pelo setInterval
     function game(){
+
+        //Seta a velocidade atual no display
+        if (speedX != 0 || speedY != 0) {
+            document.getElementById("speed").innerHTML = speed;
+        }else{
+            document.getElementById("speed").innerHTML = 0;
+        }
+        
 
         headX += speedX;//Define a posição da cabeça da serpente de acordo com a velocidade da cordenada X
         headY += speedY;//Define a posição da cabeça da serpente de acordo com a velocidade da cordenada Y
@@ -43,8 +51,8 @@ window.onload = function(){
             headY = 0;
         }
 
-        //Seta o estilo de preenchimento do contexto para preto
-        context.fillStyle = "black";
+        //Seta o estilo de preenchimento do contexto para azul escuro
+        context.fillStyle = "#14102f";
         //Aplica o preenchimento do quadro iniciando na cordenadas 0,0 até o final da altura e largura do quadro
         context.fillRect(0, 0, board.width, board.height);
 
@@ -53,8 +61,8 @@ window.onload = function(){
         //Aplica o preenchimento da cor vermelha no frame que represetna a maça
         context.fillRect(apleX * frameLenght, apleY * frameLenght, frameLenght, frameLenght);
 
-        //Seta a cor de preenchimento do contexto para cinza
-        context.fillStyle = "gray";
+        //Seta a cor de preenchimento do contexto para azul claro
+        context.fillStyle = "#2e4868";
         //Loop for que irá preencher todo o rastro da serpente de cinza
         for (let index = 0; index < trail.length; index++) {
             context.fillRect(
@@ -68,6 +76,8 @@ window.onload = function(){
             if (trail[index].x == headX && trail[index].y == headY) {
                 if (speedX != 0 || speedY != 0){
                     alert("Game over!");
+                    document.getElementById("points").innerHTML = 0;
+                    document.getElementById("speed").innerHTML = 0;
                 }
                 speedX = 0;
                 speedY = 0;
@@ -84,6 +94,8 @@ window.onload = function(){
 
         //Se a cabeça da serpente encostou na maça, aumenta o calda mais um frame e define uma posição randomica para a nova maça
         if (apleX == headX && apleY == headY) {
+            //Seta a pontuação no display
+            document.getElementById("points").innerHTML = (tail - 4) * 10;
             tail++;
             apleX = Math.floor(Math.random() * qtdFrames);
             apleY = Math.floor(Math.random() * qtdFrames);
@@ -97,20 +109,28 @@ window.onload = function(){
         //Verifica qual tecla foi pressionada e altera a direção da serpente
         switch (event.keyCode) {
             case 37: //Left
-                speedX = -speed;
-                speedY = 0;
+                if (speedX <= 0) {                    
+                    speedX = -speed;
+                    speedY = 0;
+                }
                 break;
             case 38: //Up
-                speedX = 0;
-                speedY = -speed;
+                if (speedY <= 0) {
+                    speedX = 0;
+                    speedY = -speed;                    
+                }
                 break;
             case 39: //Right
-                speedX = speed;
-                speedY = 0;
+                if (speedX >= 0) {
+                    speedX = speed;
+                    speedY = 0;                    
+                }
                 break;
             case 40: //Down
-                speedX = 0;
-                speedY = speed;
+                if (speedY >= 0) {
+                    speedX = 0;
+                    speedY = speed;                    
+                }
                 break;
         
             default:
