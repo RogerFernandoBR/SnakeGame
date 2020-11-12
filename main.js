@@ -2,9 +2,16 @@ window.onload = function(){
     let board = document.getElementById("board"); //Pega o elemento canvas
     let context = board.getContext("2d"); //Pega o contexto 2d do elemento canvas
 
+    let speedRange = document.getElementById("speedRange");
+    let speedDisplay = document.getElementById("speedDisplay");
+
     document.addEventListener("keydown", keyPush); //Adiciona um listener para teclas precionadas
     setInterval(game, 100); //executa a função game a cada 100 milisegundos
 
+    let atual = new Date(); //Declaração da variável atual que armazenará o tempo inicial para o timer
+    let elapsedTime = 0;
+    let points = 0;
+    let updateTimer;
     let speed = 1; //Velocidade de avanço dos frames
     let speedX = 0; //Velocidade na cordenada X
     let speedY = 0; //Velocidade na cordenada Y
@@ -19,13 +26,6 @@ window.onload = function(){
 
     //Função game executada pelo setInterval
     function game(){
-
-        //Seta a velocidade atual no display
-        if (speedX != 0 || speedY != 0) {
-            document.getElementById("speed").innerHTML = speed;
-        }else{
-            document.getElementById("speed").innerHTML = 0;
-        }
         
 
         headX += speedX;//Define a posição da cabeça da serpente de acordo com a velocidade da cordenada X
@@ -75,9 +75,10 @@ window.onload = function(){
             //Se a cabeça da serpente esbarrar em sua calda, Game over. A velocidade setada para zero, e a calda volta para o valor de 5 frames
             if (trail[index].x == headX && trail[index].y == headY) {
                 if (speedX != 0 || speedY != 0){
-                    alert("Game over!");
+                    alert("Game over!" + "\r\n" + "Tempo decorrido: " + tempoDecorrido + "\r\n" + "Pontos: " + points);
+                    clearInterval(updateTimer);
                     document.getElementById("points").innerHTML = 0;
-                    document.getElementById("speed").innerHTML = 0;
+                    document.getElementById("counter").innerHTML = "0:0:0:0";
                 }
                 speedX = 0;
                 speedY = 0;
@@ -95,7 +96,8 @@ window.onload = function(){
         //Se a cabeça da serpente encostou na maça, aumenta o calda mais um frame e define uma posição randomica para a nova maça
         if (apleX == headX && apleY == headY) {
             //Seta a pontuação no display
-            document.getElementById("points").innerHTML = (tail - 4) * 10;
+            points = (tail - 4) * 10;
+            document.getElementById("points").innerHTML = points;
             tail++;
             apleX = Math.floor(Math.random() * qtdFrames);
             apleY = Math.floor(Math.random() * qtdFrames);
@@ -105,6 +107,13 @@ window.onload = function(){
 
     //Função executada quando precionado uma tecla
     function keyPush(event){
+
+        if ([37, 38, 39, 40].includes(event.keyCode)){
+            if (speedX == 0 && speedY == 0) {
+                atual = new Date();
+                startTimer();
+            }
+        }
 
         //Verifica qual tecla foi pressionada e altera a direção da serpente
         switch (event.keyCode) {
@@ -137,4 +146,32 @@ window.onload = function(){
                 break;
         }
     }
+
+    //Contador de tempo
+    function startTimer(){
+        
+        updateTimer = setInterval(function () {
+            let _segundo = 1000;
+            let _minuto = _segundo * 60;
+            let _hora = _minuto * 60;
+            let _dia = _hora * 24;
+            
+            let fim = new Date();
+            let diferenca = fim - atual;
+
+            let dias = Math.floor(diferenca / _dia);
+            let horas = Math.floor((diferenca % _dia) / _hora);
+            let minutos = Math.floor((diferenca % _hora) / _minuto);
+            let segundos = Math.floor((diferenca % _minuto) / _segundo);
+
+            document.getElementById('counter').innerHTML = dias + ":";
+            document.getElementById('counter').innerHTML += horas + ":";
+            document.getElementById('counter').innerHTML += minutos + ":";
+            document.getElementById('counter').innerHTML += segundos;
+
+            tempoDecorrido = dias + ":" + horas + ":" + minutos + ":" + segundos;
+
+        }, 1000);
+    }
+    
 }

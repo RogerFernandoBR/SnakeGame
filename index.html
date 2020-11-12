@@ -1,36 +1,45 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <meta charset='utf-8'>
-    <meta http-equiv='X-UA-Compatible' content='IE=edge'>
-    <title>Snake Game</title>
-    <meta name='viewport' content='width=device-width, initial-scale=1'>
+    <title>Little Snake Game</title>
     <link rel="stylesheet" href="styles.css">
     <script src='main.js'></script>
 </head>
 <body>
     <div id="main-container">
-        <div id="inf">
-            <div class="inf-container">
-                <div class="inf-group">
-                    <label>Tempo</label>
-                    <span id="cronometer">00:00</span>
-                </div>
+        <div id="game-title">
+            Little Snake Game!
+        </div>       
+        <div id="body-container">
+            <div id="manual">
+                <img src="assets/snake.png" id="snake1">
             </div>
-            <div class="inf-container">
-                <div class="inf-group">
-                    <label>Velocidade</label>
-                    <span id="speed">0</span>
+            <canvas id="board" height="400" width="400"></canvas>
+            <div id="inf">
+                <span>
+                    <img src="assets/snake2.png" id="snake2">
+                </span>
+                <div class="inf-container">
+                    <div class="inf-group">
+                        <label>Pontos</label>
+                        <span id="points">0</span>
+                    </div>
                 </div>
-            </div>
-            <div class="inf-container">
-                <div class="inf-group">
-                    <label>Pontos</label>
-                    <span id="points">0</span>
+                <div class="inf-container">
+                    <div class="inf-group">
+                        <label>Velocidade</label>
+                        <span id="speed">0</span>
+                    </div>
+                </div>
+                <div class="inf-container">
+                    <div class="inf-group">
+                        <label>Tempo</label>
+                        <span id="counter">0:0:0:0</span>
+                    </div>
                 </div>
             </div>
         </div>
-        <canvas id="board" height="400" width="400"></canvas>
+        <div id="autor">Desenvolvido por Roger Fernando</div>
     </div>
 </body>
 </html>
